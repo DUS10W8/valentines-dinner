@@ -32,6 +32,7 @@ export default function TicketTailorWidget({ className = '' }: TicketTailorWidge
     // Create and inject the script element
     const script = document.createElement('script');
     script.src = 'https://cdn.tickettailor.com/js/widgets/min/widget.js';
+    script.async = true;
     script.setAttribute('data-url', 'https://www.tickettailor.com/all-tickets/foodies/?ref=website_widget&show_search_filter=true&show_date_filter=true&show_sort=true');
     script.setAttribute('data-type', 'inline');
     script.setAttribute('data-inline-minimal', 'true');
