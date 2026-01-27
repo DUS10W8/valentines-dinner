@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import TicketWidget from './components/TicketWidget';
+import TicketTailorWidget from './components/TicketTailorWidget';
 import Gallery from './components/Gallery';
 
 function App() {
@@ -180,7 +180,7 @@ function App() {
 
           {/* Ticket Widget */}
           <div className="mb-6">
-            <TicketWidget />
+            <TicketTailorWidget className="bg-white rounded-lg shadow-md p-4 min-h-[400px]" />
           </div>
 
           {/* Questions Box */}
