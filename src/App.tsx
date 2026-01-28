@@ -90,7 +90,7 @@ function App() {
             </div>
             <div className="flex items-center gap-2 text-gray-700">
               <span className="text-2xl">🎵</span>
-              <span className="font-serif">Live music by My Frazer</span>
+              <span className="font-serif">Live music by Frazer</span>
             </div>
           </div>
 
@@ -237,7 +237,7 @@ function App() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-wine-red">✓</span>
-                <span>Live music by My Frazer</span>
+                <span>Live music by Frazer</span>
               </li>
             </ul>
           </div>
