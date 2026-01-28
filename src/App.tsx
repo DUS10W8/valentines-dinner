@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import TicketTailorWidget from './components/TicketTailorWidget';
 import Gallery from './components/Gallery';
+import LocationMap from './components/LocationMap';
 
 function App() {
   const [selectedPrice, setSelectedPrice] = useState<'early' | 'standard'>('early');
@@ -308,22 +309,7 @@ function App() {
           <h2 className="text-4xl md:text-5xl font-script text-wine-red text-center mb-8">
             Location
           </h2>
-          <div className="bg-white rounded-lg shadow-md p-6 border border-soft-pink/20 mb-6">
-            <p className="font-serif text-gray-700 mb-4 text-center">Foodies — Kennewick, WA</p>
-            <div className="aspect-video bg-cream rounded-lg flex items-center justify-center mb-4">
-              <p className="text-gray-500 font-serif">Map embed placeholder</p>
-            </div>
-            <div className="text-center">
-              <a
-                href="https://maps.google.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-wine-red text-white px-6 py-3 rounded-full hover:bg-wine-red/90 transition-colors font-serif"
-              >
-                Get Directions
-              </a>
-            </div>
-          </div>
+          <LocationMap />
         </div>
       </section>
 
