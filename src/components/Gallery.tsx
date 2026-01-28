@@ -6,11 +6,12 @@ interface GalleryImage {
   src: string;
 }
 
+const base = import.meta.env.BASE_URL;
 const galleryImages: GalleryImage[] = [
-  { id: 1, label: 'Food', src: '/assets/gallery-1.jpg' },
-  { id: 2, label: 'Cocktails', src: '/assets/gallery-2.jpg' },
-  { id: 3, label: 'Ambience', src: '/assets/gallery-3.jpg' },
-  { id: 4, label: 'Live Music', src: '/assets/gallery-4.jpg' },
+  { id: 1, label: 'Food', src: `${base}assets/gallery-food.png` },
+  { id: 2, label: 'Cocktails', src: `${base}assets/gallery-cocktails.png` },
+  { id: 3, label: 'Ambience', src: `${base}assets/gallery-ambience.png` },
+  { id: 4, label: 'Live Music', src: `${base}assets/gallery-live-music.jpg` },
 ];
 
 export default function Gallery() {
@@ -37,43 +38,28 @@ export default function Gallery() {
   return (
     <>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        {galleryImages.map((image) => {
-          const imageExists = true; // In real app, check if file exists
-          
-          return (
-            <div
-              key={image.id}
-              onClick={() => handleImageClick(image.id)}
-              className="relative aspect-square rounded-lg overflow-hidden shadow-md cursor-pointer hover:shadow-lg transition-shadow group"
-            >
-              {imageExists ? (
-                <img
-                  src={image.src}
-                  alt={image.label}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                  onError={(e) => {
-                    // Fallback to gradient if image fails to load
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                    const parent = target.parentElement;
-                    if (parent) {
-                      parent.innerHTML = `
-                        <div class="w-full h-full bg-gradient-to-br ${getGradient(image.label)} flex items-center justify-center">
-                          <span class="text-wine-red font-script text-xl">${image.label}</span>
-                        </div>
-                      `;
-                    }
-                  }}
-                />
-              ) : (
-                <div className={`w-full h-full bg-gradient-to-br ${getGradient(image.label)} flex items-center justify-center`}>
-                  <span className="text-wine-red font-script text-xl">{image.label}</span>
-                </div>
-              )}
-              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity" />
-            </div>
-          );
-        })}
+        {galleryImages.map((image) => (
+          <div
+            key={image.id}
+            onClick={() => handleImageClick(image.id)}
+            className="relative aspect-square rounded-lg overflow-hidden shadow-md cursor-pointer hover:shadow-lg transition-shadow group"
+          >
+            <img
+              src={image.src}
+              alt={image.label}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.innerHTML = `<div class="w-full h-full bg-gradient-to-br ${getGradient(image.label)} flex items-center justify-center"><span class="text-wine-red font-script text-xl">${image.label}</span></div>`;
+                }
+              }}
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity" />
+          </div>
+        ))}
       </div>
 
       {/* Lightbox Modal */}
