@@ -187,8 +187,8 @@ function App() {
           <div className="bg-cream rounded-lg p-6 border border-soft-pink/20">
             <h3 className="font-serif font-semibold text-wine-red mb-3">Questions?</h3>
             <div className="space-y-2 text-gray-700 font-serif text-sm">
-              <p>Phone: <a href="tel:+1-XXX-XXX-XXXX" className="text-wine-red hover:underline">(XXX) XXX-XXXX</a></p>
-              <p>Email: <a href="mailto:info@foodies.com" className="text-wine-red hover:underline">info@foodies.com</a></p>
+              <p>Phone: <a href="tel:+15092081912" className="text-wine-red hover:underline">(509) 208-1912</a></p>
+              <p>Email: <a href="mailto:neomi@eatatfoodies.com" className="text-wine-red hover:underline">neomi@eatatfoodies.com</a></p>
             </div>
           </div>
         </div>
