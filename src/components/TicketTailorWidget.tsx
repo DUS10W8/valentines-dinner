@@ -11,44 +11,26 @@ export default function TicketTailorWidget({ className = '' }: TicketTailorWidge
     'idle' | 'loading' | 'loaded' | 'loaded_no_render' | 'error' | 'timeout'
   >('idle');
 
-  const widgetUrl = useMemo(
-    () => {
-      // Prefer env-provided embed URL (copy/paste from Ticket Tailor → Promote → Website embed codes).
-      // The generic "all tickets" listing page often does NOT render properly in the inline widget.
-      const fromEnv = import.meta.env.VITE_TICKETTAILOR_WIDGET_URL as string | undefined;
-      return (
-        fromEnv?.trim() ||
-        'https://www.tickettailor.com/all-tickets/foodies/?ref=website_widget&show_search_filter=true&show_date_filter=true&show_sort=true'
-      );
-    },
-    []
-  );
+  const widgetUrl = useMemo(() => {
+    const fromEnv = import.meta.env.VITE_TICKETTAILOR_WIDGET_URL as string | undefined;
+    return (
+      fromEnv?.trim() ||
+      'https://www.tickettailor.com/all-tickets/foodies/?ref=website_widget&show_search_filter=true&show_date_filter=true&show_sort=true'
+    );
+  }, []);
 
   useEffect(() => {
     const mount = scriptMountRef.current;
-    if (!mount) {
-      return;
-    }
+    if (!mount) return;
 
-    // Ticket Tailor inline embed uses a script tag with `data-*` attributes.
-    // Some builds/docs reference `widget.js` (not `tt-widget.js`), and if the wrong
-    // script is used the widget will never replace the fallback.
     const WIDGET_SRC = 'https://cdn.tickettailor.com/js/widgets/min/widget.js';
 
-    // React 18 StrictMode intentionally mounts/unmounts components twice in dev.
-    // If we inject the widget script and then immediately "cleanup remove" it,
-    // Ticket Tailor may never initialize. So: make this effect idempotent and
-    // avoid tearing down the injected script on cleanup.
+    // React 18 StrictMode mounts/unmounts twice in dev; keep this idempotent.
     const existingInjected = mount.querySelector(
       `script[src="${WIDGET_SRC}"][data-tt-react-embed="true"]`
     );
-    if (existingInjected) {
-      return;
-    }
+    if (existingInjected) return;
 
-    // Ticket Tailor's embed is driven by a script tag with `data-*` attributes.
-    // In React/SPAs, we create that script tag on mount so the widget initializes
-    // AFTER the component exists in the DOM.
     setStatus('loading');
 
     const script = document.createElement('script');
@@ -63,7 +45,6 @@ export default function TicketTailorWidget({ className = '' }: TicketTailorWidge
     script.setAttribute('data-inline-ref', 'website_widget');
     script.setAttribute('data-tt-react-embed', 'true');
 
-    // Append after the existing fallback markup (matches Ticket Tailor snippet).
     mount.appendChild(script);
 
     const timeoutId = window.setTimeout(() => {
@@ -74,8 +55,6 @@ export default function TicketTailorWidget({ className = '' }: TicketTailorWidge
       window.clearTimeout(timeoutId);
       setStatus('loaded');
 
-      // If the script loads but the widget doesn't replace the fallback,
-      // surface that explicitly (usually URL/embed config, CSP, or blocked XHRs).
       window.setTimeout(() => {
         const stillFallback = !!mount.querySelector('.tt-widget-fallback');
         if (stillFallback) {
@@ -83,6 +62,7 @@ export default function TicketTailorWidget({ className = '' }: TicketTailorWidge
         }
       }, 1500);
     };
+
     const onError = () => {
       window.clearTimeout(timeoutId);
       setStatus('error');
